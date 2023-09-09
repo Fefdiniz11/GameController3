@@ -25,8 +25,8 @@ pub trait Action {
 
 trait_enum! {
     /// This is a "variant" of all actions.
-    #[derive(Clone, Debug, Deserialize, Serialize)]
-    #[serde(tag = "type", content = "args", rename_all = "camelCase")]
+    #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(tag = "type", content = "args", rename_all = "camelCase")]
     pub enum VAction: Action {
         AddExtraTime,
         FinishHalf,

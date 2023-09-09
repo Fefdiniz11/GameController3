@@ -12,7 +12,7 @@ use crate::types::{ActionSource, Game, Params};
 
 /// This struct defines an entry type that should appear once at the beginning of a log file.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq, Eq, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct LoggedMetadata {
     /// The name of the program that created this log.
@@ -27,7 +27,7 @@ pub struct LoggedMetadata {
 }
 
 /// This struct defines an entry type that represents an action that is applied to the game.
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct LoggedAction {
     /// The type of event which triggered the action.
@@ -42,7 +42,7 @@ pub type LoggedGameState = Box<Game>;
 
 /// This struct defines an entry type for a received monitor request.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct LoggedMonitorRequest {
     /// The host which sent the monitor request.
@@ -54,7 +54,7 @@ pub struct LoggedMonitorRequest {
 
 /// This struct defines an entry type for a received status message.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct LoggedStatusMessage {
     /// The host which sent the status message.
@@ -66,7 +66,7 @@ pub struct LoggedStatusMessage {
 
 /// This struct defines an entry type for a received team message.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct LoggedTeamMessage {
     /// The team number of the team which sent the team message.
@@ -78,7 +78,7 @@ pub struct LoggedTeamMessage {
     pub data: Vec<u8>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum LogEntry {
     Metadata(LoggedMetadata),
@@ -93,7 +93,7 @@ pub enum LogEntry {
 }
 
 /// This struct wraps a log entry together with a timestamp.
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct TimestampedLogEntry {
     /// The timestamp of the entry as its duration since the start of the game.

@@ -18,3 +18,4 @@ fn main() {
         .write_to_file(out_path.join("bindings.rs"))
         .expect("failed to write bindings");
 }
+

@@ -11,7 +11,7 @@ use crate::action::VAction;
 use crate::types::{Game, Params, Phase, State};
 
 /// This enumerates conditions which restrict in which states a timer actually counts down.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum RunCondition {
     /// The timer counts down in any state.
@@ -61,7 +61,7 @@ impl Index<RunCondition> for EvaluatedRunConditions {
 }
 
 /// This enumerates the possible behaviors of a timer when 0 is reached.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum BehaviorAtZero {
     /// When the timer reaches 0, it stops itself and potentially releases some actions to be
@@ -74,7 +74,7 @@ pub enum BehaviorAtZero {
 }
 
 /// This struct describes the state of a timer. A timer can be either started or stopped.
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum Timer {
     /// The timer is active with some parameters. It may still be paused.
@@ -149,15 +149,20 @@ impl Timer {
                 run_condition,
                 behavior_at_zero,
             } => {
-                run_conditions[*run_condition]
-                    && !matches!(
-                        (*remaining, behavior_at_zero),
-                        (SignedDuration::ZERO, BehaviorAtZero::Clip)
-                    )
+                if run_conditions[*run_condition] {
+                    if remaining.is_zero() && *behavior_at_zero == BehaviorAtZero::Clip {
+                        false
+                    } else {
+                        true
+                    }
+                } else {
+                    false
+                }
             }
             _ => false,
         }
     }
+
 
     /// This function returns if the timer will expire at some point in the future.
     pub fn will_expire(&self) -> bool {

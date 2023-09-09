@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use crate::timer::Timer;
 
 /// This enumerates the special GameController modes for technical challenges.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum ChallengeMode {
     /// Dynamic Ball Handling Challenge
@@ -19,7 +19,7 @@ pub enum ChallengeMode {
 }
 
 /// This struct contains constant parameters of a penalty type.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct PenaltyParams {
     /// The base duration of the penalty.
@@ -30,7 +30,7 @@ pub struct PenaltyParams {
 }
 
 /// This struct contains constant parameters of a set play type.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct SetPlayParams {
     /// The duration of the (restricted) Playing state of this set play.
@@ -41,7 +41,7 @@ pub struct SetPlayParams {
 }
 
 /// This struct contains constant parameters of a (sub)competition.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct CompetitionParams {
     /// A "pretty" version of the competition's name.
@@ -85,7 +85,7 @@ pub struct CompetitionParams {
 }
 
 /// This struct contains constant parameters for one team.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct TeamParams {
     /// The number which globally identifies the team within the league.
@@ -97,7 +97,7 @@ pub struct TeamParams {
 }
 
 /// This struct contains constant parameters that are specific to a game.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct GameParams {
     /// The team parameters for both teams.
@@ -127,7 +127,7 @@ impl GameParams {
 }
 
 /// This struct contains the combined parameters of the competition in general and the current game.
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize, PartialEq, Eq, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Params {
     /// The parameters of the competition.
@@ -137,7 +137,7 @@ pub struct Params {
 }
 
 /// This enumerates the phases in which a game can be.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum Phase {
     /// The first half of the regular playing time.
@@ -149,7 +149,7 @@ pub enum Phase {
 }
 
 /// This enumerates the states in which a game can be.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)] 
 #[serde(rename_all = "camelCase")]
 pub enum State {
     /// This state is active before each half and before a penalty shoot-out.
@@ -167,7 +167,7 @@ pub enum State {
 }
 
 /// This enumerates the set plays which can be active.
-#[derive(Clone, Copy, Debug, Deserialize, Enum, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum SetPlay {
     /// No set play is active.
@@ -187,7 +187,7 @@ pub enum SetPlay {
 }
 
 /// This enumerates the jersey colors. Values may be added to match actually submitted jersey designs.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum Color {
     Red,
@@ -203,7 +203,7 @@ pub enum Color {
 }
 
 /// This enumerates the reasons why a player can be penalized.
-#[derive(Clone, Copy, Debug, Deserialize, Enum, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Enum, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum Penalty {
     /// The player is not penalized.
@@ -238,7 +238,7 @@ pub enum Penalty {
 /// but there are some calls that map to different penalties in different states
 /// ([PenaltyCall::IllegalPosition]) and there are calls that map to the same penalty but with
 /// different side effects ([PenaltyCall::Foul], [PenaltyCall::PenaltyKick]).
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum PenaltyCall {
     RequestForPickUp,
@@ -280,7 +280,7 @@ impl Neg for Side {
 }
 
 /// This enumerates the possible assignments of teams to sides of the field of play.
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum SideMapping {
     /// The home team defends the left goal (and the away team defends the right goal).
@@ -326,7 +326,7 @@ impl From<PlayerNumber> for u8 {
 }
 
 /// This struct contains the dynamic state of a game.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Game {
     /// The current mapping of the home/away team to the left/right side of the field.
@@ -391,7 +391,7 @@ impl Game {
 }
 
 /// This struct contains the dynamic state of a team.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Team {
     /// The player number of the goalkeeper. Can be [None] (only) during a penalty shoot-out.
@@ -429,7 +429,7 @@ impl IndexMut<PlayerNumber> for Team {
 }
 
 /// This struct contains the dynamic state of a player.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Player {
     /// The current penalty of the player.
@@ -439,7 +439,7 @@ pub struct Player {
 }
 
 /// This enumerates the possible sources that can trigger actions.
-#[derive(Deserialize, PartialEq, Serialize)]
+#[derive(Deserialize, PartialEq, Serialize, Eq, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub enum ActionSource {
     /// The action was triggered by a network packet. It should be replayed and even kept if
